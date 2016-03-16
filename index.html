@@ -1,0 +1,431 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<TITLE> Give Me A Random Picture </TITLE>
+<!--- This is the link to the stylesheet we will be using ---->
+<LINK rel="stylesheet" type="text/css" href="style/style.css">
+
+
+
+<!-- Load a text file and generate a word -->
+<script>
+
+var words = new Array();
+words[0] = "Coffee";words[1] = "Beans";words[3] = "Computer";words[4] = "Word";words[5] = "Dog";words[6] = "Doge";words[7] = "Cat";words[8] = "Rat";words[9] = "Mat";
+words[10] = "Liquid";words[11] = "Dirty";words[12] = "Mouse";words[13] = "Four";words[14] = "Tinman";words[15] = "Wrapper";words[16] = "Tree";words[17] = "Ohio";
+words[18] = "Shark";words[19] = "Spear";words[20] = "Red Bull";words[21] = "Slap";words[22] = "Internet";words[23] = "White";words[24] = "Snapple";words[25] = "Meme";
+words[26] = "USB";words[27] = "Fire";words[28] = "Police";words[29] = "Shirt";words[30] = "Shoes";words[31] = "Muffin";words[32] = "Car Keys";words[33] = "Gypsy";
+words[34] = "Trap";words[35] = "Snack";words[36] = "Goal";words[37] = "Goat";words[38] = "Bag";words[39] = "Red";words[40] = "Marker";words[41] = "Nike";
+words[42] = "Robot";words[43] = "Pirate";words[44] = "Jump";words[45] = "Bottle";words[46] = "Sleep";words[47] = "Camera";words[48] = "Pen";words[49] = "Sun";
+words[50] = "Cup";words[51] = "Cartoon";words[52] = "Television";words[53] = "Pizza";words[54] = "Hamburger";words[55] = "Weights";words[56] = "Money";
+words[57] = "Tower";words[58] = "Music";words[59] = "Yawn";words[60] = "Kick";words[61] = "Tail";words[62] = "Window";words[63] = "Chemistry";
+words[64] = "Band";words[65] = "Run";words[66] = "Movie";words[67] = "Spider";words[68] = "Star";words[69] = "Jeans";words[70] = "Grin";words[71] = "Ladder";
+words[72] = "Eye";words[73] = "Coke";words[74] = "Sucker";words[75] = "Gum";
+
+function getWord() {
+	var randomNum = Math.floor((Math.random()*75)+0);  //Create random number to choose array
+	var word = words[randomNum];
+	return word;
+}
+
+</script>
+
+
+
+<!-- Image grabber -->
+<script src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      google.load('search', '1');
+
+      var imageSearch;
+	  var searchTerm = getWord();
+	  
+	  function initSearch(){
+		google.load('search', '1');
+		searchTerm = getWord();
+		var content = document.getElementById('Picture');
+		
+		content.removeChild(content.lastChild);
+		
+		//while(content.hasChildNodes()){
+			//content.removeChild(content.lastChild);
+		//}
+		
+		OnLoad();
+		//google.setOnLoadCallback(OnLoad);
+	  }
+
+      function searchComplete() {
+
+        // Check that we got results
+        if (imageSearch.results && imageSearch.results.length > 0) {
+
+          // Grab our content div, clear it.
+          var contentDiv = document.getElementById('Picture');
+
+          // Loop through our results, printing them to the page.
+          var results = imageSearch.results;
+			// For each result write it's title and image to the screen
+			var result = results[0];
+			
+			// We use titleNoFormatting so that no HTML tags are left in the 
+			// title
+			var newImg = document.createElement('img');
+			var holderDiv = document.createElement('div');
+			newImg.style.float = "left"
+			newImg.style.marginTop= "50px";
+			newImg.style.marginLeft="15%";
+			
+			
+			var imgW = result.width;
+			var imgH = result.height;
+			
+			var ratio = 1.0;
+			
+			if(imgW > 600 || imgH > 350){
+				if(600/imgW < 350/imgH){
+					ratio = 600/imgW;
+				}else{
+					ratio = 350/imgH;
+				}
+			}
+
+			newImg.style.width = imgW*ratio + "px";
+			newImg.style.height = imgH*ratio + "px";
+			newImg.style.paddingLeft = ((600 - Math.floor(imgW*ratio))/2) + "px";
+			newImg.style.paddingRight = ((600- Math.floor(imgW*ratio))/2) + "px";
+			newImg.style.paddingTop = ((350 - Math.floor(imgH*ratio))/2) + "px";
+			//alert(((600 - newImg.style.width)/2));
+			
+			// There is also a result.url property which has the escaped version
+			newImg.src=result.url;
+			holderDiv.appendChild(newImg);
+			contentDiv.appendChild(holderDiv);
+        }else{
+			alert("No images found :(");
+		}
+      }
+
+      function OnLoad() {
+      
+        // Create an Image Search instance.
+        imageSearch = new google.search.ImageSearch();
+
+        // Set searchComplete as the callback function when a search is 
+        // complete.  The imageSearch object will have results in it.
+        imageSearch.setSearchCompleteCallback(this, searchComplete, null);
+		
+		
+		
+        // Find me a beautiful car.
+        imageSearch.execute(searchTerm);
+        
+        // Include the required Google branding
+        google.search.Search.getBranding('branding');
+      }
+      google.setOnLoadCallback(OnLoad);
+	  
+	  function getImageWord(){
+		return searchTerm;
+	  }
+    </script>
+	
+</head>
+<body>
+
+
+
+
+
+
+<div id="Picture">
+
+</div>
+
+<div id="Hangman">
+</div>
+
+<div id="Bank">
+</div>
+
+<div id="Words">
+</div>
+
+<div id="content">
+</div>
+
+
+<!-- Update Hangman image and Image Blocker -->
+<script>
+
+var wrongGuesses = 0;
+var imageURL = "images/Hangman";
+var div;
+initHangman();
+
+function initHangman(){
+	wrongGuesses = 0;
+	var picture = document.createElement('img');
+	
+	div = document.getElementById("Hangman");
+	while(div.firstChild){
+		div.removeChild(div.firstChild);
+	}
+	
+	picture.src = imageURL + "0" + ".png";
+	div.appendChild(picture);
+	initCoverImage();
+}
+
+function guessedWrong(){
+	wrongGuesses++;
+	
+	if(wrongGuesses <= 6){
+		
+		var picture = document.createElement('img');
+		picture.src = imageURL + wrongGuesses + ".png";
+		
+		div = document.getElementById("Hangman");
+		
+		while(div.firstChild){
+			div.removeChild(div.firstChild);
+		}
+		
+		div.appendChild(picture);
+		
+	}
+}
+
+function initCoverImage(){/*
+	div2 = document.getElementById('Picture');
+	
+	while(div2.childNodes.length > 1){
+		div2.removeChild(div2.firstChild);
+	}
+	
+	var div3 = div2.firstChild;
+	div2.innerHTML = "boop";
+	div3.innerHTML = "asdfasf";
+	div3.innerHTML = "asdfasdf";
+	
+	var width = "100px";//div.firstChild.width;
+	var height = "100px";//div.firstChild.height;
+	var paddingLeft = "100px";//Math.floor(width/2);
+	var paddingTop = "100px";//Math.floor(height/2);
+	
+	var word = getImageWord();
+	
+	for(var i = 0; i < word.length; i++){
+		var part = document.createElement("img");
+		//part.style.position = "absolute";
+		//part.style.background = "#FFFFFF";
+		part.style.width = width + "px";
+		part.style.height = height + "px";
+		//part.style.paddingLeft = paddingLeft + "px";
+		//part.style.paddingTop = paddingTop + "px";
+		part.style.float = "left";
+		
+		div2.appendChild(part);
+	}
+	*/
+}
+
+function unlockImage(){
+
+}
+</script>	
+
+<!-- Create Bank and Handle Guesses -->
+<script>
+
+var div2 = document.getElementById('Bank');
+var text = document.createElement('div');
+text.innerHTML = "Bank";
+text.style.fontSize = "24px";
+text.style.fontWeight = "bold";
+text.style.textDecoration = "underline"
+text.style.paddingLeft = "250px";
+
+var word = getImageWord().toUpperCase();
+var size = uniqueSize();
+var goodGuesses = new Array();
+var badGuesses = new Array();
+
+div2.appendChild(text);
+
+createButtons();
+populateGuesses();
+
+function initBank(){
+	word = getImageWord().toUpperCase();
+	size = uniqueSize();
+	goodGuesses = new Array();
+	badGuesses = new Array();
+	
+	var bank = document.getElementById('Bank');
+	while(bank.childNodes.length > 2){
+		bank.removeChild(bank.lastChild);
+	}
+	var text = document.createElement('div');
+	text.innerHTML = "Bank";
+	text.style.fontSize = "24px";
+	text.style.fontWeight = "bold";
+	text.style.textDecoration = "underline"
+	text.style.paddingLeft = "250px";
+	
+	createButtons();
+	populateGuesses();
+}
+
+function createButtons(){
+	var buttonDiv = document.createElement('div');
+	buttonDiv.id = "buttonDiv";
+	buttonDiv.style.fontSize = "48px";
+	buttonDiv.style.fontWeight = "bold";
+	buttonDiv.style.textAlign = "center";
+
+	
+	
+	for(var i = 1; i < 27; i++){
+		buttonDiv.innerHTML = buttonDiv.innerHTML + 
+		'<button onclick="button_click(this)"  enabled="true"  style="font-size:18px" value="' + String.fromCharCode(64 + i) + '"> ' + String.fromCharCode(64 + i)  
+		+ ' </button>' + "&nbsp&nbsp";
+	
+		if(i % 9 == 0){
+			buttonDiv.innerHTML = buttonDiv.innerHTML + "<br />";
+		}
+
+	}
+		div2.appendChild(buttonDiv);
+}
+
+
+function button_click(button){
+	button.disabled = "true";
+	make_guess(button.value);
+}
+
+<!-- Handle Win/Loss conditions -->
+
+function hasWon(){
+	var buttonArea = document.getElementById("Words");
+	var tempButton = document.createElement("div");
+	tempButton.style.marginTop = "150px"
+	tempButton.innerHTML ='<center><button onclick="restart()" enabled="true">Play Again</button></center>';
+	buttonArea.appendChild(tempButton);
+}
+
+function restart(){
+
+	try{
+		initSearch();
+	}catch(err){
+	
+	}
+	initBank();
+	initHangman();
+}
+
+function hasLost(word){
+
+	var buttonArea = document.getElementById("Words");
+	var tempButton = document.createElement("div");
+	tempButton.style.marginTop = "150px"
+	tempButton.innerHTML ='<center><button onclick="restart()" enabled="true">Try Again</button></center>';
+	buttonArea.appendChild(tempButton);
+}
+
+function make_guess(guess){
+	if(word.indexOf(guess) != -1){
+		foundWord(guess);
+	}else{
+		badGuess(guess);
+	}
+}
+
+function foundWord(guess){
+	//buttonDiv.innerHTML = "FOUND: " + guess + getImageWord();
+	var length = goodGuesses.length;
+	goodGuesses[length] = guess;
+	populateGuesses();
+	if(goodGuesses.length == size){
+		hasWon();
+	}
+}
+
+function badGuess(guess){
+	//buttonDiv.innerHTML = "NOT FOUND: " + guess + getImageWord();
+	guessedWrong();
+	var length = badGuesses.length;
+	badGuesses[length] = guess;
+	if(badGuesses.length == 6){
+		hasLost(guess);
+	}else{
+	}
+}
+
+function uniqueSize(){
+	var unique = 0;
+	var guesses = "";
+	
+	for(var i = 0; i < word.length; i++){
+		if(guesses.indexOf((word.toLowerCase()).charAt(i)) == -1 && word.charAt(i) != " "){
+			guesses = guesses + (word.toLowerCase()).charAt(i);
+			unique++;
+		}
+	}
+	
+	return unique;
+}
+
+function populateGuesses(){
+	var guessArea = document.getElementById("Words");
+	
+	while(guessArea.firstChild){
+		guessArea.removeChild(guessArea.firstChild);
+	}
+		var letter = document.createElement("div");
+		letter.style.fontSize = "34px";
+		letter.style.textAlign = "center";
+	for(var i = 0; i < word.length; i++){
+	
+		if(goodGuesses.indexOf(word[i]) != -1){
+			letter.innerHTML = letter.innerHTML + word[i] + " ";
+		}else{
+			letter.innerHTML = letter.innerHTML + "_" + " ";
+		}
+		
+		guessArea.appendChild(letter);
+	}
+
+}
+
+</script>
+<script type="text/javascript">
+        function myKeyPress(e){
+
+            var keynum;
+
+            if(window.event){ // IE					
+            	keynum = e.keyCode;
+            }else
+                if(e.which){ // Netscape/Firefox/Opera					
+            		keynum = e.which;
+                 }
+            alert(String.fromCharCode(keynum));
+        }
+</script>
+
+
+
+
+
+
+</body>
+
+
+
+</html>
